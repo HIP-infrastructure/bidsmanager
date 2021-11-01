@@ -1,8 +1,10 @@
 ARG CI_REGISTRY_IMAGE
 ARG DAVFS2_VERSION
-FROM ${CI_REGISTRY_IMAGE}/dcm2niix:1.0.20211006 as dcm2niix
-FROM ${CI_REGISTRY_IMAGE}/anywave:2.1.3
-LABEL maintainer="nathalie.casati@chuv.ch"
+ARG DCM2NIIX_VERSION
+ARG ANYWAVE_VERSION
+FROM ${CI_REGISTRY_IMAGE}/dcm2niix:${DCM2NIIX_VERSION} as dcm2niix
+FROM ${CI_REGISTRY_IMAGE}/anywave:${ANYWAVE_VERSION}
+LABEL maintainer="anthony.boyer.gin@univ-grenoble-alpes.fr"
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG CARD
@@ -19,9 +21,10 @@ COPY --from=dcm2niix /apps/dcm2niix/install /apps/dcm2niix/install
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \ 
-    curl unzip python3-pip python3-tk && \
-    pip3 install setuptools PyQt5==5.15.4 nibabel bids_validator && \
-    ggID='1r4ZQo4TMZQ6p0IoDpKGLA7pGwzhNhItm' && \
+    curl unzip python3-pip python3-tk python3-scipy && \
+    pip3 install setuptools PyQt5==5.15.4 nibabel xlrd \
+    PySimpleGUI pydicom paramiko tkcalendar bids_validator && \
+    ggID='1lwAgqS6fXKqWRzZhBntdLGGF4AIsWZx6' && \
     ggURL='https://drive.google.com/uc?export=download' && \
     filename="$(curl -sc /tmp/gcokie "${ggURL}&id=${ggID}" \
     | grep -o '="uc-name.*</span>' | sed 's/.*">//;s/<.a> .*//')" && \ 
@@ -30,7 +33,7 @@ RUN apt-get update && \
     mkdir ./install && \
     unzip -q -d ./install ${filename} && \
     rm ${filename} && \
-    cd install/BIDS_Manager/ && \
+    cd install/$(basename $filename .zip)/ && \
     python3 setup.py install && \
     apt-get remove -y --purge curl unzip && \
     apt-get autoremove -y --purge && \
@@ -40,7 +43,7 @@ RUN apt-get update && \
 ENV APP_SHELL="no"
 ENV APP_CMD="bids_manager"
 ENV PROCESS_NAME="bids_manager"
-ENV DIR_ARRAY=""
+ENV DIR_ARRAY="SoftwarePipeline"
 ENV CONFIG_ARRAY=".bash_profile"
 
 HEALTHCHECK --interval=10s --timeout=10s --retries=5 --start-period=30s \
