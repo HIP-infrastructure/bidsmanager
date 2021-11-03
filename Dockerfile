@@ -40,9 +40,9 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-ENV APP_SHELL="no"
-ENV APP_CMD="bids_manager"
-ENV PROCESS_NAME="bids_manager"
+ENV APP_SHELL="yes"
+ENV APP_CMD=""
+ENV PROCESS_NAME=""
 ENV DIR_ARRAY="SoftwarePipeline"
 ENV CONFIG_ARRAY=".bash_profile"
 
