@@ -10,9 +10,9 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG CARD
 ARG CI_REGISTRY
 ARG APP_NAME
-#ARG APP_VERSION
+ARG APP_VERSION
 
-#LABEL app_version=$APP_VERSION
+LABEL app_version=$APP_VERSION
 
 WORKDIR /apps/${APP_NAME}
 
@@ -43,7 +43,8 @@ RUN apt-get update && \
 ENV APP_SHELL="yes"
 ENV APP_CMD=""
 ENV PROCESS_NAME=""
-ENV DIR_ARRAY="SoftwarePipeline"
+ENV APP_DATA_DIR_ARRAY="SoftwarePipeline"
+ENV DATA_DIR_ARRAY=""
 ENV CONFIG_ARRAY=".bash_profile"
 
 HEALTHCHECK --interval=10s --timeout=10s --retries=5 --start-period=30s \
