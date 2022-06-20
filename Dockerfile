@@ -36,7 +36,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-ENV APP_SHELL="yes"
+ENV APP_SPECIAL="terminal"
 ENV APP_CMD=""
 ENV PROCESS_NAME=""
 ENV APP_DATA_DIR_ARRAY="SoftwarePipeline"
