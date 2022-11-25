@@ -26,7 +26,7 @@ RUN apt-get update && \
     curl unzip python3-pip python3-tk python3-scipy && \
     pip3 install gdown setuptools PyQt5==5.15.4 nibabel xlrd \
     PySimpleGUI pydicom paramiko tkcalendar bids_validator && \
-    gdown 1lwAgqS6fXKqWRzZhBntdLGGF4AIsWZx6 && \
+    gdown "1lwAgqS6fXKqWRzZhBntdLGGF4AIsWZx6&confirm=t" && \
     filename="bidsificator.zip" && \
     mkdir ./install && \
     unzip -q -d ./install ${filename} && \
