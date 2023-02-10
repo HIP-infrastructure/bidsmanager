@@ -1,9 +1,10 @@
 ARG CI_REGISTRY_IMAGE
+ARG TAG
 ARG DAVFS2_VERSION
 ARG DCM2NIIX_VERSION
 ARG ANYWAVE_VERSION
-FROM ${CI_REGISTRY_IMAGE}/dcm2niix:${DCM2NIIX_VERSION} as dcm2niix
-FROM ${CI_REGISTRY_IMAGE}/anywave:${ANYWAVE_VERSION}
+FROM ${CI_REGISTRY_IMAGE}/dcm2niix:${DCM2NIIX_VERSION}${TAG} as dcm2niix
+FROM ${CI_REGISTRY_IMAGE}/anywave:${ANYWAVE_VERSION}${TAG}
 LABEL maintainer="anthony.boyer.gin@univ-grenoble-alpes.fr"
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -13,6 +14,7 @@ ARG APP_NAME
 ARG APP_VERSION
 
 LABEL app_version=$APP_VERSION
+LABEL app_tag=$TAG
 
 WORKDIR /apps/${APP_NAME}
 
@@ -24,7 +26,7 @@ RUN apt-get update && \
     curl unzip python3-pip python3-tk python3-scipy && \
     pip3 install gdown setuptools PyQt5==5.15.4 nibabel xlrd \
     PySimpleGUI pydicom paramiko tkcalendar bids_validator && \
-    gdown --id 1lwAgqS6fXKqWRzZhBntdLGGF4AIsWZx6 && \
+    gdown "1lwAgqS6fXKqWRzZhBntdLGGF4AIsWZx6&confirm=t" && \
     filename="bidsificator.zip" && \
     mkdir ./install && \
     unzip -q -d ./install ${filename} && \
