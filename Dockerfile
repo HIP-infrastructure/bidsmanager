@@ -5,7 +5,7 @@ ARG DCM2NIIX_VERSION
 ARG ANYWAVE_VERSION
 FROM ${CI_REGISTRY_IMAGE}/dcm2niix:${DCM2NIIX_VERSION}${TAG} as dcm2niix
 FROM ${CI_REGISTRY_IMAGE}/anywave:${ANYWAVE_VERSION}${TAG}
-LABEL maintainer="anthony.boyer.gin@univ-grenoble-alpes.fr"
+LABEL maintainer="anthony.BOYER@univ-amu.fr"
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG CARD
@@ -26,12 +26,12 @@ RUN apt-get update && \
     curl unzip python3-pip python3-tk python3-scipy && \
     pip3 install gdown setuptools PyQt5==5.15.4 nibabel xlrd \
     PySimpleGUI pydicom paramiko tkcalendar bids_validator && \
-    gdown "1lwAgqS6fXKqWRzZhBntdLGGF4AIsWZx6&confirm=t" && \
-    filename="bidsificator.zip" && \
+    curl -LO https://github.com/Dynamap/BIDS_Manager/archive/refs/heads/master.zip && \
+    filename="master.zip" && \
     mkdir ./install && \
     unzip -q -d ./install ${filename} && \
     rm ${filename} && \
-    cd install/$(basename $filename .zip)/ && \
+    cd install/BIDS_Manager-master/ && \
     python3 setup.py install && \
     apt-get remove -y --purge curl unzip && \
     apt-get autoremove -y --purge && \
