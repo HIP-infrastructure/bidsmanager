@@ -23,15 +23,14 @@ COPY --from=dcm2niix /apps/dcm2niix/install /apps/dcm2niix/install
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \ 
-    curl unzip python3-pip python3-tk python3-scipy && \
-    pip3 install gdown setuptools PyQt5==5.15.4 nibabel xlrd \
-    PySimpleGUI pydicom paramiko tkcalendar bids_validator && \
-    curl -LO https://github.com/Dynamap/BIDS_Manager/archive/refs/heads/master.zip && \
-    filename="master.zip" && \
+    curl unzip python3-pip python3-tk python3-scipy git && \
+    pip3 install gdown setuptools PyQt5==5.15.4 nibabel xlrd numpy==1.21 \
+    PySimpleGUI pydicom paramiko tkcalendar bids_validator requests && \
     mkdir ./install && \
-    unzip -q -d ./install ${filename} && \
-    rm ${filename} && \
-    cd install/BIDS_Manager-master/ && \
+    cd install && \
+    git clone https://github.com/Dynamap/BIDS_Manager.git && \
+    cd BIDS_Manager/ && \
+    git checkout ${APP_VERSION} && \
     python3 setup.py install && \
     apt-get remove -y --purge curl unzip && \
     apt-get autoremove -y --purge && \
