@@ -23,7 +23,7 @@ COPY --from=dcm2niix /apps/dcm2niix/install /apps/dcm2niix/install
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \ 
-    curl unzip python3-pip python3-tk python3-scipy git && \
+    curl python3-pip python3-tk python3-scipy git && \
     pip3 install gdown setuptools PyQt5==5.15.4 nibabel xlrd numpy==1.21 \
     PySimpleGUI pydicom paramiko tkcalendar bids_validator requests && \
     mkdir ./install && \
@@ -32,7 +32,7 @@ RUN apt-get update && \
     cd BIDS_Manager/ && \
     git checkout ${APP_VERSION} && \
     python3 setup.py install && \
-    apt-get remove -y --purge curl unzip && \
+    apt-get remove -y --purge curl && \
     apt-get autoremove -y --purge && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
